@@ -3,6 +3,11 @@
 <head>
   <title>TinyApp</title>
 </head>
+
+<header>
+    <% include ./partials/_header %>
+</header>
+
 <body>
   This is the shortURL: <%= shortURL %> <br />
   This is the longURL: <% fullURL.forEach((listing) => { %>
