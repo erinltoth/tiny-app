@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+  This is the shortURL: <%= shortURL %> <br />
+  This is the longURL: <% fullURL.forEach((listing) => { %>
+    <% if (listing.shortURL == shortURL) { %>
+      <%= listing.fullURL %>
+  <% } %>
+  <% }) %>
+</p>
+
+
+  <a href="#">Click here to shorten a URL!</a>
+</body>
+</html>

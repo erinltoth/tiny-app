@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+  <ul>
+    <% urls.forEach((url) => { %>
+    <li><%= url.shortURL %> - <%= url.fullURL %></li>
+    <% }); %>
+  <a href="#">Click here to shorten a URL!</a>
+</body>
+</html>
