@@ -44,12 +44,25 @@ app.post("/urls", (request, response) => {
   const newLong = Object.values(request.body);
   let newRequest = {shortURL: newShort, fullURL: newLong.join()};
   urlDatabase.push(newRequest);
-  // response.send("Ok");
   console.log(urlDatabase);
   let redirectLink = `/urls/${newShort}`;
   console.log(redirectLink);
   response.redirect(redirectLink);
 });
+
+app.get('/u/:shortURL', (request, response) => {
+  const newShortPath = request.originalUrl;
+  const newShortString = newShortPath.split('').slice(3).join('');
+  const actualSite = [];
+  for (let item of urlDatabase){
+    if (item.shortURL == newShortString){
+      actualSite.push(item.fullURL);
+    }
+  }
+  response.redirect(actualSite);
+
+});
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
