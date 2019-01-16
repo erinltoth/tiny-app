@@ -44,8 +44,11 @@ app.post("/urls", (request, response) => {
   const newLong = Object.values(request.body);
   let newRequest = {shortURL: newShort, fullURL: newLong.join()};
   urlDatabase.push(newRequest);
-  response.send("Ok");
+  // response.send("Ok");
   console.log(urlDatabase);
+  let redirectLink = `/urls/${newShort}`;
+  console.log(redirectLink);
+  response.redirect(redirectLink);
 });
 
 app.listen(PORT, () => {
@@ -56,7 +59,7 @@ function generateRandomString(min, max) {
   const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const randomLength = 6;
   let randomURL = '';
-  for (let i = -1; i < randomLength; i++) {
+  for (let i = 0; i < randomLength; i++) {
     min = Math.ceil(min);
     max = Math.floor(max);
     let j = Math.floor(Math.random() * (max-min +1)) + min;
