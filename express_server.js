@@ -59,6 +59,12 @@ app.post("/urls/:id/delete", (request, response) => {
   response.redirect('/urls');
 });
 
+app.post("/login", (request, response) => {
+  const username = request.body.username;
+  response.cookie('name', username);
+  response.redirect("/urls");
+})
+
 app.get("/urls/:id", (request, response) => {
   let templateVars = { shortURL: request.params.id, fullURL: urlDatabase };
   response.render("urls_show", templateVars);
