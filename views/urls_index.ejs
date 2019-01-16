@@ -10,8 +10,9 @@
 <body>
   <ul>
     <% urls.forEach((url) => { %>
-    <li><%= url.shortURL %> - <%= url.fullURL %></li>
+    <li><%= url.shortURL %> - <%= url.fullURL %> <form method="POST" action="/urls/<%= url.shortURL %>/delete"><button>␡</button></form></li>
     <% }); %>
   <a href="#">Click here to shorten a URL!</a>
 </body>
 </html>
+

@@ -50,6 +50,18 @@ app.post("/urls", (request, response) => {
   response.redirect(redirectLink);
 });
 
+app.post("/urls/:id/delete", (request, response) => {
+  const id = request.params.id;
+  const shortURL = urlDatabase.find((shortURL) => {
+    return shortURL.id === id;
+  });
+  const index = urlDatabase.indexOf(id);
+
+  urlDatabase.splice(index, 1);
+
+  response.redirect('/urls');
+});
+
 app.get('/u/:shortURL', (request, response) => {
   const newShortPath = request.originalUrl;
   const newShortString = newShortPath.split('').slice(3).join('');
@@ -61,6 +73,10 @@ app.get('/u/:shortURL', (request, response) => {
   }
   response.redirect(actualSite);
 
+});
+
+app.get('/notvalid', (response, request) => {
+  response.send('Hey! That is not a valid shorURL!');
 });
 
 
@@ -81,4 +97,3 @@ function generateRandomString(min, max) {
   return randomURL;
 };
 
-// generateRandomString (1, 62);
