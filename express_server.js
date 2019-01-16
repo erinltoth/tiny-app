@@ -27,12 +27,13 @@ app.get("/hello", (request, response) => {
 });
 
 app.get("/urls", (request, response) => {
-  let templateVars = { urls: urlDatabase };
+  let templateVars = { urls: urlDatabase, username: request.cookies["name"] };
   response.render("urls_index", templateVars);
 });
 
 app.get("/urls_new", (request, response) => {
-  response.render("urls_new");
+  let templateVars = { username: request.cookies["name"]};
+  response.render("urls_new", templateVars);
 });
 
 app.post("/urls", (request, response) => {
@@ -66,7 +67,7 @@ app.post("/login", (request, response) => {
 })
 
 app.get("/urls/:id", (request, response) => {
-  let templateVars = { shortURL: request.params.id, fullURL: urlDatabase };
+  let templateVars = { shortURL: request.params.id, fullURL: urlDatabase, username: request.cookies["name"]};
   response.render("urls_show", templateVars);
 });
 
