@@ -8,6 +8,7 @@
 </header>
 
 <body>
+<p>
   This is the shortURL: <%= shortURL %> <br />
   This is the longURL: <% fullURL.forEach((listing) => { %>
     <% if (listing.shortURL == shortURL) { %>
@@ -15,6 +16,13 @@
   <% } %>
   <% }) %>
 </p>
+<p>
+  <form action="/urls/<%= shortURL %>" method="post">
+    <label for="update-URL">New URL:</label>
+    <input id="update-URL" type="text" name="newLongURL">
+    <button>Update URL</button>
+  </form>
+
 
 
   <a href="#">Click here to shorten a URL!</a>

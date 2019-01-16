@@ -33,11 +33,6 @@ app.get("/urls_new", (request, response) => {
   response.render("urls_new");
 });
 
-app.get("/urls/:id", (request, response) => {
-  let templateVars = { shortURL: request.params.id, fullURL: urlDatabase };
-  response.render("urls_show", templateVars);
-});
-
 app.post("/urls", (request, response) => {
   console.log(request.body);
   const newShort = generateRandomString (1, 62);
@@ -60,6 +55,22 @@ app.post("/urls/:id/delete", (request, response) => {
   urlDatabase.splice(index, 1);
 
   response.redirect('/urls');
+});
+
+app.get("/urls/:id", (request, response) => {
+  let templateVars = { shortURL: request.params.id, fullURL: urlDatabase };
+  response.render("urls_show", templateVars);
+});
+
+app.post("/urls/:id", (request, response) => {
+  const id = request.params.id;
+  const updatedURL = request.body.newLongURL;
+  for (let item of urlDatabase) {
+    if (item.shortURL == id) {
+      item.fullURL = updatedURL;
+    }
+  }
+  response.redirect(`/urls/${id}`);
 });
 
 app.get('/u/:shortURL', (request, response) => {
