@@ -40,7 +40,12 @@ app.get("/urls/:id", (request, response) => {
 
 app.post("/urls", (request, response) => {
   console.log(request.body);
+  const newShort = generateRandomString (1, 62);
+  const newLong = Object.values(request.body);
+  let newRequest = {shortURL: newShort, fullURL: newLong.join()};
+  urlDatabase.push(newRequest);
   response.send("Ok");
+  console.log(urlDatabase);
 });
 
 app.listen(PORT, () => {
@@ -51,13 +56,13 @@ function generateRandomString(min, max) {
   const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const randomLength = 6;
   let randomURL = '';
-  for (let i = 0; i < randomLength; i++) {
+  for (let i = -1; i < randomLength; i++) {
     min = Math.ceil(min);
     max = Math.floor(max);
     let j = Math.floor(Math.random() * (max-min +1)) + min;
     randomURL += chars.charAt(j);
   };
-  console.log(randomURL);
+  return randomURL;
 };
 
-generateRandomString (1, 62);
+// generateRandomString (1, 62);
