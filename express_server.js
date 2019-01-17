@@ -12,6 +12,19 @@ const urlDatabase = [
   { shortURL: "9sm5xK", fullURL: "http://www.google.com"}
 ];
 
+const users = {
+  "001" : {
+    id: "001",
+    email: "erintoth@gmail.com",
+    password: "crazy_password@!#"
+  },
+  "002" : {
+    id: "002",
+    email: "erin@erintoth.com",
+    password: "super$#21pa$$"
+  }
+};
+
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", (request, response) => {
