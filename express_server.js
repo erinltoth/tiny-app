@@ -25,6 +25,14 @@ const users = {
   }
 };
 
+var errors = {
+  '400': (request, response) => {
+    response.statusCode = 400;
+    response.setHeader('Content-Type', 'text/plain');
+    response.end('Not Found\n');
+  }
+};
+
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", (request, response) => {
@@ -55,17 +63,25 @@ app.get("/register", (request, response) => {
 });
 
 app.post("/register", (request, response) => {
-  let newUserId = (generateRandomString (1, 62)).toString();
   let newUserEmail = request.body.email;
   let newUserPass = request.body.password;
-  users[newUserId] = { id: newUserId, email: newUserEmail, password: newUserPass };
-  console.log(users);
-  response.cookie('user_id', newUserId);
-  response.redirect('/urls');
+  if (newUserEmail && newUserPass) {
+    for (let UserId in users) {
+      if (users[UserId].email === newUserEmail) {
+      errors['400'](request, response);
+      } else {
+      let newUserId = (generateRandomString (1, 62)).toString();
+      users[newUserId] = { id: newUserId, email: newUserEmail, password: newUserPass };
+      response.cookie('user_id', newUserId);
+      response.redirect('/urls');
+      }
+    }
+  } else {
+      errors['400'](request,response);
+  }
 });
 
 app.post("/urls", (request, response) => {
-  // console.log(request.body);
   const newShort = generateRandomString (1, 62);
   const newLong = Object.values(request.body);
   let newRequest = {shortURL: newShort, fullURL: newLong.join()};
