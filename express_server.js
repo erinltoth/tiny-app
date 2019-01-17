@@ -13,13 +13,13 @@ const urlDatabase = [
 ];
 
 const users = {
-  "001" : {
-    id: "001",
+  "59284" : {
+    id: "59284",
     email: "erintoth@gmail.com",
     password: "crazy_password@!#"
   },
-  "002" : {
-    id: "002",
+  "01938" : {
+    id: "01938",
     email: "erin@erintoth.com",
     password: "super$#21pa$$"
   }
@@ -55,6 +55,12 @@ app.get("/register", (request, response) => {
 });
 
 app.post("/register", (request, response) => {
+  let newUserId = (generateRandomString (1, 62)).toString();
+  let newUserArray = Object.values(request.body);
+  let newUserEmail = newUserArray[0];
+  let newUserPass = newUserArray[1];
+  users[newUserId] = { id: newUserId, email: newUserEmail, password: newUserPass };
+  response.cookie('user_id', newUserId);
   response.redirect('/urls');
 });
 
@@ -72,19 +78,18 @@ app.post("/urls", (request, response) => {
 
 app.post("/urls/:id/delete", (request, response) => {
   const id = request.params.id;
-  const shortURL = urlDatabase.find((shortURL) => {
-    return shortURL.id === id;
-  });
   const index = urlDatabase.indexOf(id);
-
-  urlDatabase.splice(index, 1);
-
+  for (let item of urlDatabase) {
+    if (item.shortURL === id) {
+      urlDatabase.splice(index - 1, 1);
+    }
+  }
   response.redirect('/urls');
 });
 
 app.post("/login", (request, response) => {
   const username = request.body.username;
-  response.cookie('name', username);
+  response.cookie('username', username);
   response.redirect("/urls");
 });
 
