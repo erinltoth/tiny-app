@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head></head>
+  <body style="font-size:20px; padding:50px;">
+    <% include ./partials/_header %>
+   <% if (document:cookie) { %>
+<b>UserID:</b> <%= users.user_id %> <form action="/logout" method="POST"> <input id="logout" type="submit" value="logout"></form>
+<% } else { %>
+<form action="/login" method="POST">
+    <label for="email">Enter username:</label> <input id="email" type="email" name="email"><input type="submit" value="submit">
+</form>
+<form action ="/login" method="POST">
+    <label for="password">Enter password:</label><input id="password" type="password" name="password"><input type="submit" value="submit">
+</form>
+<% }; %>
+
+  </body>
+</html>

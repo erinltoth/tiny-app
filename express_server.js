@@ -48,18 +48,26 @@ app.get("/hello", (request, response) => {
 });
 
 app.get("/urls", (request, response) => {
-  let templateVars = { urls: urlDatabase, username: request.cookies["name"] };
+  // Get user id from cookies;
+  // const userId = request.cookies.user_id;
+  // Get user object from user id and users db
+  const user = users[userId];
+  let templateVars = { urls: urlDatabase, user: { users, request.cookie('user_id', users[user_id])} };
   response.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (request, response) => {
-  let templateVars = { username: request.cookies["name"]};
+  let templateVars = { urls: urlDatabase, user: { users, request.cookie('user_id', users[user_id])} };
   response.render("urls_new", templateVars);
 });
 
 app.get("/register", (request, response) => {
-  let templateVars = { username: request.cookies["name"]};
+  let templateVars = { urls: urlDatabase, user: { users, request.cookie('user_id', users[user_id])} };
   response.render("user_reg", templateVars);
+});
+
+app.get("/login", (request, response) => {
+
 });
 
 app.post("/register", (request, response) => {

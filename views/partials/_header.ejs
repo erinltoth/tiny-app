@@ -5,7 +5,7 @@
 <title>Erin's TinyApp!</title>
 
 <!-- <b>Username:</b> <%= username %> -->
-<% if (username) { %>
+<% if (document:cookie) { %>
 <b>Username:</b> <%= username %> <form action="/logout" method="POST"> <input id="logout" type="submit" value="logout"></form>
 <% } else { %>
 <form action="/login" method="POST">
