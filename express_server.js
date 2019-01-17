@@ -48,21 +48,24 @@ app.get("/hello", (request, response) => {
 });
 
 app.get("/urls", (request, response) => {
+  const userCID = request.cookies['user_id'];
   // Get user id from cookies;
   // const userId = request.cookies.user_id;
   // Get user object from user id and users db
-  const user = users[userId];
-  let templateVars = { urls: urlDatabase, user: { users, request.cookie('user_id', users[user_id])} };
+  // const user = users[userId];
+  let templateVars = { urls: urlDatabase, user: fetchUser(request.cookies["user_id"])};
   response.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (request, response) => {
-  let templateVars = { urls: urlDatabase, user: { users, request.cookie('user_id', users[user_id])} };
+  const userCID = request.cookies['user_id'];
+  let templateVars = { urls: urlDatabase, user: fetchUser(request.cookies["user_id"]) };
   response.render("urls_new", templateVars);
 });
 
 app.get("/register", (request, response) => {
-  let templateVars = { urls: urlDatabase, user: { users, request.cookie('user_id', users[user_id])} };
+  const userCID = request.cookies['user_id'];
+  let templateVars = { urls: urlDatabase, user: fetchUser(request.cookies["user_id"]) };
   response.render("user_reg", templateVars);
 });
 
@@ -124,7 +127,8 @@ app.post("/logout", (request, response) => {
 });
 
 app.get("/urls/:id", (request, response) => {
-  let templateVars = { shortURL: request.params.id, fullURL: urlDatabase, username: request.cookies["name"]};
+  const userCID = request.cookies['user_id'];
+  let templateVars = { shortURL: request.params.id, fullURL: urlDatabase, user: fetchUser(request.cookies["user_id"])};
   response.render("urls_show", templateVars);
 });
 
@@ -160,6 +164,11 @@ app.get('/notvalid', (response, request) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
+
+function fetchUser(user_id) {
+  const userObject = users[user_id];
+  return userObject;
+};
 
 function generateRandomString(min, max) {
   const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
