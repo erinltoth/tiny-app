@@ -31,20 +31,20 @@ app.get("/urls", (request, response) => {
   response.render("urls_index", templateVars);
 });
 
-app.get("/urls_new", (request, response) => {
-  // let templateVars = { username: request.cookies["name"]};
+app.get("/urls/new", (request, response) => {
+  let templateVars = { username: request.cookies["name"]};
   response.render("urls_new", templateVars);
 });
 
 app.post("/urls", (request, response) => {
-  console.log(request.body);
+  // console.log(request.body);
   const newShort = generateRandomString (1, 62);
   const newLong = Object.values(request.body);
   let newRequest = {shortURL: newShort, fullURL: newLong.join()};
   urlDatabase.push(newRequest);
-  console.log(urlDatabase);
+  // console.log(urlDatabase);
   let redirectLink = `/urls/${newShort}`;
-  console.log(redirectLink);
+  // console.log(redirectLink);
   response.redirect(redirectLink);
 });
 
