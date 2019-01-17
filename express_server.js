@@ -73,12 +73,13 @@ app.post("/register", (request, response) => {
       let newUserId = (generateRandomString (1, 62)).toString();
       users[newUserId] = { id: newUserId, email: newUserEmail, password: newUserPass };
       response.cookie('user_id', newUserId);
-      response.redirect('/urls');
+      // response.redirect('/urls');
       }
     }
   } else {
       errors['400'](request,response);
   }
+  response.redirect('/urls');
 });
 
 app.post("/urls", (request, response) => {
