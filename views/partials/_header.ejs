@@ -4,7 +4,10 @@
 
 <title>Erin's TinyApp!</title>
 
-<b>Username:</b> <%= username %>
+<!-- <b>Username:</b> <%= username %> -->
+<% if (username) { %>
+<b>Username:</b> <%= username %> <form action="/logout" method="POST"> <input id="logout" type="submit" value="logout"></form>
+<% } else { %>
 <form action="/login" method="POST">
-    <label for="username">Enter username:</label> <input id="username" type="text" name="username"><input type="submit" value="submit">
-</form>
+    <label for="username">Enter username:</label> <input id="username" type="text" name="username"><input type="submit" value="submit"></form>
+<% }; %>

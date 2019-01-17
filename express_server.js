@@ -32,7 +32,7 @@ app.get("/urls", (request, response) => {
 });
 
 app.get("/urls_new", (request, response) => {
-  let templateVars = { username: request.cookies["name"]};
+  // let templateVars = { username: request.cookies["name"]};
   response.render("urls_new", templateVars);
 });
 
@@ -64,7 +64,12 @@ app.post("/login", (request, response) => {
   const username = request.body.username;
   response.cookie('name', username);
   response.redirect("/urls");
-})
+});
+
+app.post("/logout", (request, response) => {
+  response.clearCookie('name');
+  response.redirect("/urls");
+});
 
 app.get("/urls/:id", (request, response) => {
   let templateVars = { shortURL: request.params.id, fullURL: urlDatabase, username: request.cookies["name"]};
