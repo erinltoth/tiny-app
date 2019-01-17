@@ -36,6 +36,11 @@ app.get("/urls/new", (request, response) => {
   response.render("urls_new", templateVars);
 });
 
+app.get("/register", (request, response) => {
+  let templateVars = { username: request.cookies["name"]};
+  response.render("user_reg", templateVars);
+});
+
 app.post("/urls", (request, response) => {
   // console.log(request.body);
   const newShort = generateRandomString (1, 62);
