@@ -41,6 +41,10 @@ app.get("/register", (request, response) => {
   response.render("user_reg", templateVars);
 });
 
+app.post("/register", (request, response) => {
+  response.redirect('/urls');
+});
+
 app.post("/urls", (request, response) => {
   // console.log(request.body);
   const newShort = generateRandomString (1, 62);
