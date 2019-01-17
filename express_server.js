@@ -56,10 +56,10 @@ app.get("/register", (request, response) => {
 
 app.post("/register", (request, response) => {
   let newUserId = (generateRandomString (1, 62)).toString();
-  let newUserArray = Object.values(request.body);
-  let newUserEmail = newUserArray[0];
-  let newUserPass = newUserArray[1];
+  let newUserEmail = request.body.email;
+  let newUserPass = request.body.password;
   users[newUserId] = { id: newUserId, email: newUserEmail, password: newUserPass };
+  console.log(users);
   response.cookie('user_id', newUserId);
   response.redirect('/urls');
 });
