@@ -58,9 +58,13 @@ app.get("/urls", (request, response) => {
 });
 
 app.get("/urls/new", (request, response) => {
-  const userCID = request.cookies['user_id'];
   let templateVars = { urls: urlDatabase, user: fetchUser(request.cookies["user_id"]) };
+  user = fetchUser(request.cookies["user_id"]);
+  if (user) {
   response.render("urls_new", templateVars);
+  } else {
+  response.redirect('/login');
+  }
 });
 
 app.get("/register", (request, response) => {
