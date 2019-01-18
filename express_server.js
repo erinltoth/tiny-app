@@ -54,10 +54,14 @@ app.get("/hello", (request, response) => {
 });
 
 app.get("/urls", (request, response) => {
+  let templateVars = {};
   let user = fetchUser(request.cookies["user_id"]);
-  let userId = user.id;
-  console.log(urlsForUser(userId));
-  let templateVars = { urls: urlsForUser(, user: fetchUser(request.cookies["user_id"])};
+  if (user != undefined) {
+    let userId = user.id;
+    let userUrlDatabse = urlsForUser(userId);
+    let templateVars = { urls: userUrlDatabase, user: fetchUser(request.cookies["user_id"])};
+
+  }
   response.render("urls_index", templateVars);
 });
 
@@ -87,7 +91,7 @@ app.get("/login", (request, response) => {
 app.post("/register", (request, response) => {
   let newUserEmail = request.body.email;
   let newUserPass = request.body.password;
-  const hashedPass = bcrypt.hashSync(password, 10);
+  const hashedPass = bcrypt.hashSync(newUserPass, 10);
   if (newUserEmail && newUserPass) {
     for (let UserId in users) {
       if (users[UserId].email === newUserEmail) {
@@ -102,7 +106,8 @@ app.post("/register", (request, response) => {
   } else {
       errors['400'](request,response);
   }
-  response.redirect('/urls');
+  console.log(users);
+  response.redirect('/login');
 });
 
 app.post("/urls", (request, response) => {
@@ -138,14 +143,12 @@ app.post("/login", (request, response) => {
   let email = request.body.email;
   // const userId = users.;
   for (let userId in users) {
-    if (users[userId].email === email && bcrypt.compareSync(users[userId].password, hashedPassword) {
+    if (users[userId].email === email && bcrypt.compareSync(users[userId].password, hashedPassword)) {
       response.cookie('user_id', userId);
-    }
-    if (users[userId].email === email && bcrypt.compareSync(users[userId].password, hashedPassword) {
-      errors['403'](request,response);
     } else {
       errors['403'](request,response);
     }
+
     console.log(email);
     console.log(password);
   }
