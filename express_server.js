@@ -8,8 +8,8 @@ app.set("view engine", "ejs");
 app.use(cookieParser());
 
 const urlDatabase = [
-  { shortURL: "b2xVn2", fullURL: "http://www.lighthouselabs.ca"},
-  { shortURL: "9sm5xK", fullURL: "http://www.google.com"}
+  { shortURL: "b2xVn2", fullURL: "http://www.lighthouselabs.ca", userID: "59284"},
+  { shortURL: "9sm5xK", fullURL: "http://www.google.com", userID: "01938"}
 ];
 
 const users = {
@@ -59,9 +59,12 @@ app.get("/urls", (request, response) => {
 
 app.get("/urls/new", (request, response) => {
   let templateVars = { urls: urlDatabase, user: fetchUser(request.cookies["user_id"]) };
-  user = fetchUser(request.cookies["user_id"]);
-  if (user) {
-  response.render("urls_new", templateVars);
+  let user = fetchUser(request.cookies["user_id"]);
+  if (user != undefined) {
+    let userId = user.id;
+    if (userId) {
+      response.render("urls_new", templateVars);
+    }
   } else {
   response.redirect('/login');
   }
@@ -100,11 +103,13 @@ app.post("/register", (request, response) => {
 app.post("/urls", (request, response) => {
   const newShort = generateRandomString (1, 62);
   const newLong = Object.values(request.body);
-  let newRequest = {shortURL: newShort, fullURL: newLong.join()};
+  const user = fetchUser(request.cookies["user_id"]);
+  // let newRequest = {shortURL: newShort, fullURL: newLong.join(), userID: };
   urlDatabase.push(newRequest);
   // console.log(urlDatabase);
   let redirectLink = `/urls/${newShort}`;
   // console.log(redirectLink);
+  console.log(user);
   response.redirect(redirectLink);
 });
 
