@@ -101,10 +101,11 @@ app.post("/register", (request, response) => {
 });
 
 app.post("/urls", (request, response) => {
-  const newShort = generateRandomString (1, 62);
-  const newLong = Object.values(request.body);
-  const user = fetchUser(request.cookies["user_id"]);
-  // let newRequest = {shortURL: newShort, fullURL: newLong.join(), userID: };
+  let newShort = generateRandomString (1, 62);
+  let newLong = Object.values(request.body);
+  let user = fetchUser(request.cookies["user_id"]);
+  let userId = user.id;
+  let newRequest = {shortURL: newShort, fullURL: newLong.join(), userID: userId };
   urlDatabase.push(newRequest);
   // console.log(urlDatabase);
   let redirectLink = `/urls/${newShort}`;
