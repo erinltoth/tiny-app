@@ -16,7 +16,7 @@ const users = {
   "59284" : {
     id: "59284",
     email: "erintoth@gmail.com",
-    password: "crazy_password@!#"
+    password: "sammich"
   },
   "01938" : {
     id: "01938",
@@ -30,6 +30,11 @@ var errors = {
     response.statusCode = 400;
     response.setHeader('Content-Type', 'text/plain');
     response.end('Not Found\n');
+  },
+  '403': (request, response) => {
+    response.statusCode = 403;
+    response.setHeader('Content-Type', 'text/plain');
+    response.end('Forbidden\n');
   }
 };
 
@@ -48,11 +53,6 @@ app.get("/hello", (request, response) => {
 });
 
 app.get("/urls", (request, response) => {
-  const userCID = request.cookies['user_id'];
-  // Get user id from cookies;
-  // const userId = request.cookies.user_id;
-  // Get user object from user id and users db
-  // const user = users[userId];
   let templateVars = { urls: urlDatabase, user: fetchUser(request.cookies["user_id"])};
   response.render("urls_index", templateVars);
 });
@@ -64,13 +64,13 @@ app.get("/urls/new", (request, response) => {
 });
 
 app.get("/register", (request, response) => {
-  const userCID = request.cookies['user_id'];
   let templateVars = { urls: urlDatabase, user: fetchUser(request.cookies["user_id"]) };
   response.render("user_reg", templateVars);
 });
 
 app.get("/login", (request, response) => {
-
+  let templateVars = { urls: urlDatabase, user: fetchUser(request.cookies["user_id"]) };
+  response.render("user_login", templateVars);
 });
 
 app.post("/register", (request, response) => {
@@ -116,13 +116,27 @@ app.post("/urls/:id/delete", (request, response) => {
 });
 
 app.post("/login", (request, response) => {
-  const username = request.body.username;
-  response.cookie('username', username);
-  response.redirect("/urls");
+  let password = request.body.password;
+  let email = request.body.email;
+  // const userId = users.;
+  for (let userId in users) {
+    if (users[userId].email === email && users[userId].password === password) {
+      response.cookie('user_id', userId);
+    }
+    if (users[userId].email === email && users[userId].password !== password) {
+      errors['403'](request,response);
+    } else {
+      errors['403'](request,response);
+    }
+    console.log(email);
+    console.log(password);
+  }
+  // console.log(request.cookies["user_id"]);
+  response.redirect("/");
 });
 
 app.post("/logout", (request, response) => {
-  response.clearCookie('name');
+  response.clearCookie('user_id');
   response.redirect("/urls");
 });
 

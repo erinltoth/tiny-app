@@ -3,10 +3,11 @@
 <meta charset="UTF-8">
 
 <% if (user) { %>
-<b>Maybe it would be nice to have some sort of logout.</b>
-<% } %>
-<% { %>
-<a href="/register">Register</a>
-<a href="/login">Login</a>
-<% } %>
+  <b><%= user.id %></b>
+    <form action="/logout" method="POST">
+      <input type="submit" value="Logout">
+    </form>
+    <% } else { %>
+  <a href="/register">Register</a> or <a href="/login">Login</a>
 
+  <% } %>
