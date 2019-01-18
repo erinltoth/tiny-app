@@ -8,11 +8,17 @@
 </header>
 
 <body>
+  <% if (user) { %>
+    <% if (urls != undefined) { %>
   <ul>
     <% urls.forEach((url) => { %>
     <li><%= url.shortURL %> - <%= url.fullURL %> <a href="urls/<%= url.shortURL %>">Edit</a> <form method="POST" action="/urls/<%= url.shortURL %>/delete"><button>Delete</button></form>
     <% }); %></li>
-  <a href="#">Click here to shorten a URL!</a>
+    <% } %>
+    Please <a href="/urls/new">make some links</a>!
+  <% } %>
+  Hey, would you like to <a href="/register">register</a>?
+
 </body>
 </html>
 

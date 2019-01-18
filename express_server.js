@@ -2,8 +2,9 @@ const express = require("express");
 const app = express();
 const PORT = 8080; //setting default port 8080
 const bodyParser = require("body-parser");
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
+var cookieSession = require('cookie-session')
 
 app.set("view engine", "ejs");
 app.use(cookieParser());
@@ -54,20 +55,20 @@ app.get("/hello", (request, response) => {
 });
 
 app.get("/urls", (request, response) => {
-  let templateVars = {};
-  let user = fetchUser(request.cookies["user_id"]);
+  let templateVars = { user: ''};
+  let user = fetchUser(request.session["user_id"]);
   if (user != undefined) {
     let userId = user.id;
-    let userUrlDatabse = urlsForUser(userId);
-    let templateVars = { urls: userUrlDatabase, user: fetchUser(request.cookies["user_id"])};
-
+    let userUrlDatabase = urlsForUser(userId);
+    let templateVars = { urls: userUrlDatabase, user: fetchUser(request.session["user_id"])};
+    return templateVars;
   }
   response.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (request, response) => {
-  let templateVars = { urls: urlDatabase, user: fetchUser(request.cookies["user_id"]) };
-  let user = fetchUser(request.cookies["user_id"]);
+  let templateVars = { urls: urlDatabase, user: fetchUser(request.session["user_id"]) };
+  let user = fetchUser(request.session["user_id"]);
   if (user != undefined) {
     let userId = user.id;
     if (userId) {
@@ -79,12 +80,12 @@ app.get("/urls/new", (request, response) => {
 });
 
 app.get("/register", (request, response) => {
-  let templateVars = { urls: urlDatabase, user: fetchUser(request.cookies["user_id"]) };
+  let templateVars = { urls: urlDatabase, user: fetchUser(request.session["user_id"]) };
   response.render("user_reg", templateVars);
 });
 
 app.get("/login", (request, response) => {
-  let templateVars = { urls: urlDatabase, user: fetchUser(request.cookies["user_id"]) };
+  let templateVars = { urls: urlDatabase, user: fetchUser(request.session["user_id"]) };
   response.render("user_login", templateVars);
 });
 
@@ -99,7 +100,7 @@ app.post("/register", (request, response) => {
       } else {
       let newUserId = (generateRandomString (1, 62)).toString();
       users[newUserId] = { id: newUserId, email: newUserEmail, password: hashedPass };
-      response.cookie('user_id', newUserId);
+      request.session.user_id = "newUserId";
       // response.redirect('/urls');
       }
     }
@@ -113,7 +114,7 @@ app.post("/register", (request, response) => {
 app.post("/urls", (request, response) => {
   let newShort = generateRandomString (1, 62);
   let newLong = Object.values(request.body);
-  let user = fetchUser(request.cookies["user_id"]);
+  let user = fetchUser(request.session["user_id"]);
   let userId = user.id;
   let newRequest = {shortURL: newShort, fullURL: newLong.join(), userID: userId };
   urlDatabase.push(newRequest);
@@ -127,7 +128,7 @@ app.post("/urls", (request, response) => {
 app.post("/urls/:id/delete", (request, response) => {
   const id = request.params.id;
   const index = urlDatabase.indexOf(id);
-  let user = fetchUser(request.cookies["user_id"]);
+  let user = fetchUser(request.session["user_id"]);
   let userId = user.id;
   for (let item of urlDatabase) {
     if (item.userID === userId && item.shortURL === id) {
@@ -144,7 +145,7 @@ app.post("/login", (request, response) => {
   // const userId = users.;
   for (let userId in users) {
     if (users[userId].email === email && bcrypt.compareSync(users[userId].password, hashedPassword)) {
-      response.cookie('user_id', userId);
+      request.session.user_id = "userId";
     } else {
       errors['403'](request,response);
     }
@@ -162,15 +163,15 @@ app.post("/logout", (request, response) => {
 });
 
 app.get("/urls/:id", (request, response) => {
-  const userCID = request.cookies['user_id'];
-  let templateVars = { shortURL: request.params.id, fullURL: urlDatabase, user: fetchUser(request.cookies["user_id"])};
+  const userCID = request.session['user_id'];
+  let templateVars = { shortURL: request.params.id, fullURL: urlDatabase, user: fetchUser(request.session["user_id"])};
   response.render("urls_show", templateVars);
 });
 
 app.post("/urls/:id", (request, response) => {
   const id = request.params.id;
   const updatedURL = request.body.newLongURL;
-  let user = fetchUser(request.cookies["user_id"]);
+  let user = fetchUser(request.session["user_id"]);
   let userId = user.id;
   for (let item of urlDatabase) {
     if (item.shortURL == id && item.userID === userId) {
