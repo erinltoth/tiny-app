@@ -3,6 +3,7 @@ const app = express();
 const PORT = 8080; //setting default port 8080
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 
 app.set("view engine", "ejs");
 app.use(cookieParser());
@@ -53,7 +54,10 @@ app.get("/hello", (request, response) => {
 });
 
 app.get("/urls", (request, response) => {
-  let templateVars = { urls: urlDatabase, user: fetchUser(request.cookies["user_id"])};
+  let user = fetchUser(request.cookies["user_id"]);
+  let userId = user.id;
+  console.log(urlsForUser(userId));
+  let templateVars = { urls: urlsForUser(, user: fetchUser(request.cookies["user_id"])};
   response.render("urls_index", templateVars);
 });
 
@@ -83,13 +87,14 @@ app.get("/login", (request, response) => {
 app.post("/register", (request, response) => {
   let newUserEmail = request.body.email;
   let newUserPass = request.body.password;
+  const hashedPass = bcrypt.hashSync(password, 10);
   if (newUserEmail && newUserPass) {
     for (let UserId in users) {
       if (users[UserId].email === newUserEmail) {
       errors['400'](request, response);
       } else {
       let newUserId = (generateRandomString (1, 62)).toString();
-      users[newUserId] = { id: newUserId, email: newUserEmail, password: newUserPass };
+      users[newUserId] = { id: newUserId, email: newUserEmail, password: hashedPass };
       response.cookie('user_id', newUserId);
       // response.redirect('/urls');
       }
@@ -129,13 +134,14 @@ app.post("/urls/:id/delete", (request, response) => {
 
 app.post("/login", (request, response) => {
   let password = request.body.password;
+  let hashedPassword = bcrypt.hashSync(password, 10);
   let email = request.body.email;
   // const userId = users.;
   for (let userId in users) {
-    if (users[userId].email === email && users[userId].password === password) {
+    if (users[userId].email === email && bcrypt.compareSync(users[userId].password, hashedPassword) {
       response.cookie('user_id', userId);
     }
-    if (users[userId].email === email && users[userId].password !== password) {
+    if (users[userId].email === email && bcrypt.compareSync(users[userId].password, hashedPassword) {
       errors['403'](request,response);
     } else {
       errors['403'](request,response);
@@ -196,6 +202,16 @@ app.listen(PORT, () => {
 function fetchUser(user_id) {
   const userObject = users[user_id];
   return userObject;
+};
+
+function urlsForUser(id) {
+ let userUrlDatabase = [];
+ for (let item of urlDatabase) {
+  if (item.userID === id) {
+    userUrlDatabase.push(item);
+  }
+ }
+ return userUrlDatabase;
 };
 
 function generateRandomString(min, max) {
