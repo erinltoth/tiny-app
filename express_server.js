@@ -117,8 +117,10 @@ app.post("/urls", (request, response) => {
 app.post("/urls/:id/delete", (request, response) => {
   const id = request.params.id;
   const index = urlDatabase.indexOf(id);
+  let user = fetchUser(request.cookies["user_id"]);
+  let userId = user.id;
   for (let item of urlDatabase) {
-    if (item.shortURL === id) {
+    if (item.userID === userId && item.shortURL === id) {
       urlDatabase.splice(index - 1, 1);
     }
   }
@@ -159,8 +161,10 @@ app.get("/urls/:id", (request, response) => {
 app.post("/urls/:id", (request, response) => {
   const id = request.params.id;
   const updatedURL = request.body.newLongURL;
+  let user = fetchUser(request.cookies["user_id"]);
+  let userId = user.id;
   for (let item of urlDatabase) {
-    if (item.shortURL == id) {
+    if (item.shortURL == id && item.userID === userId) {
       item.fullURL = updatedURL;
     }
   }
