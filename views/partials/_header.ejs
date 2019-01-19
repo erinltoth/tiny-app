@@ -3,7 +3,7 @@
 <meta charset="UTF-8">
 
 <% if (user) { %>
-  <b><%= user.id %></b>
+  <b><%= user.email %></b>
     <form action="/logout" method="POST">
       <input type="submit" value="Logout">
     </form>

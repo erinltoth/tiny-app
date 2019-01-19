@@ -8,17 +8,21 @@
 </header>
 
 <body>
-  <% if (user) { %>
-    <% if (urls != undefined) { %>
-  <ul>
+  <ul><% if (urls) { %>
     <% urls.forEach((url) => { %>
-    <li><%= url.shortURL %> - <%= url.fullURL %> <a href="urls/<%= url.shortURL %>">Edit</a> <form method="POST" action="/urls/<%= url.shortURL %>/delete"><button>Delete</button></form>
-    <% }); %></li>
-    <% } %>
-    Please <a href="/urls/new">make some links</a>!
-  <% } %>
-  Hey, would you like to <a href="/register">register</a>?
-
+    <% console.log(url); %>
+      <li>
+        <%= url.shortURL %> - <%= url.fullURL %>
+        <% if (user.id === url.userID) { %>
+          <a href="/urls/<%= url.shortURL %>">Edit</a>
+          <form method="POST" action="/urls/<%= url.shortURL %>/delete">
+            <button>Delete</button>
+          </form>
+          <% } %>
+      </li>
+    <% }); %>
+  </ul>
+  Would you like to <a href="/urls/new">add a new link</a>?
+  <% }; %>
 </body>
 </html>
-

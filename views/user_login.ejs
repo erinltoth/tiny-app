@@ -3,20 +3,10 @@
   <head></head>
   <body style="font-size:20px; padding:50px;">
     <% include ./partials/_header %>
-  <% if (user) { %>
-  <b><%= user.id %></b>
-    <form action="/logout" method="POST">
-      <input type="submit" value="Logout">
-    </form>
-    <a href="/urls">Let's go here</a>
-    <% } else { %>
-  <form action="/login" method="POST">
-    <input type="email" name="email">
-    <input type="password" name="password">
+  <p><form action="/login" method="POST">
+    Email: <input type="email" name="email">
+    Password: <input type="password" name="password">
     <input type="submit" name="Submit">
-  </form>
-
-  <% } %>
-
+  </form></p>
   </body>
 </html>

@@ -8,23 +8,19 @@
 </header>
 
 <body>
-<p>
-  This is the shortURL: <%= shortURL %> <br />
-  This is the longURL: <% fullURL.forEach((listing) => { %>
-    <% if (listing.shortURL == shortURL) { %>
-      <%= listing.fullURL %>
-  <% } %>
-  <% }) %>
+<p> <% console.log(urls); %>
+  <% console.log(urls.shortURL); %>
+  This is the shortURL: <%= urls.shortURL %> <br />
 </p>
 <p>
-  <form action="/urls/<%= shortURL %>" method="post">
-    <label for="update-URL">New URL:</label>
+  <form action="/urls/<%= urls.shortURL %>" method="post">
+    <label for="update-URL"><%= urls.fullURL %> &#8649; </label>
     <input id="update-URL" type="text" name="newLongURL">
     <button>Update URL</button>
   </form>
 
 
 
-  <a href="#">Click here to shorten a URL!</a>
+  <a href="/urls/new">Click here to shorten a URL!</a>
 </body>
 </html>
