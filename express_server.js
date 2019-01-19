@@ -209,11 +209,15 @@ app.listen(PORT, () => {
   console.log(`Erin's TinyApp is now listening on port ${PORT}!`);
 });
 
+// Using the user_id supplied by the cookie this function returns an object containing
+// the user's registration data.
 function fetchUser(user_id) {
   const userObject = users[user_id];
   return userObject;
 };
 
+// Using the email supplied by the user via the form this function returns a string
+// containing the matching userID.
 function fetchUserIdByEmail(email) {
   let user_id = '';
   for (let user in users) {
@@ -224,6 +228,8 @@ function fetchUserIdByEmail(email) {
   return user_id;
 };
 
+// Using the shortURL supplied by the user this function returns an object containing
+// all of saved data matching that request.
 function urlByShort(shortURL) {
   let urlsObj = {};
   for (let item in urlDatabase) {
@@ -234,6 +240,8 @@ function urlByShort(shortURL) {
   return urlsObj;
 };
 
+// Using the user_id supplied by the cookie this function returns an array containing
+// all of the urls "owned" by that user.
 function urlsForUser(user_id) {
   let urlsArray = [];
   for (let item in urlDatabase) {
@@ -244,6 +252,8 @@ function urlsForUser(user_id) {
  return urlsArray;
 };
 
+// Using the email supplied by the user this function returns a boolean response of
+// true if the email matches one already saved in the users object.
 function checkEmailTaken(email){
   let flag = false;
   for (let user in users) {
@@ -254,6 +264,8 @@ function checkEmailTaken(email){
   return flag;
 };
 
+// Using the shortURL supplied by the user this function returns a boolean response of
+// true if the shortURL matches one already saved in the urlDatabase object.
 function checkShortUrl(shortURL) {
   let flag = false;
   for (let url in urlDatabase) {
@@ -264,6 +276,8 @@ function checkShortUrl(shortURL) {
   return flag;
 };
 
+// Using the shortURL supplied by the user this function returns the longURL associated
+// with that shortURL.
 function fetchLongUrl(shortURL) {
   let longURL = '';
   for (let url in urlDatabase) {
@@ -274,6 +288,8 @@ function fetchLongUrl(shortURL) {
   return longURL;
 };
 
+// Using the user_id supplied by the cookie this function returns a boolean response of
+// true if the user_id currently signed in matches a user_id within the database.
 function checkOwner(user_id) {
   let flag = false;
   for (let url in urlDatabase) {
@@ -284,6 +300,9 @@ function checkOwner(user_id) {
   return flag;
 };
 
+// Using the user_id supplied by the cookie and the shortURL supplied by the user this
+// function returns a boolean response of true if the signed in user "owns" the shortURL
+// they are attempting to access.
 function checkOwnerLong(user_id, shortURL) {
   let flag = false;
   for (let url in urlDatabase) {
@@ -294,6 +313,8 @@ function checkOwnerLong(user_id, shortURL) {
   return flag;
 };
 
+// Using the email and password supplied by the user this function returns a boolean
+// response of true if the email and password match those associated with the user.
 function checkPassword(email, password) {
   let flag = false;
   for (let user in users) {
@@ -306,6 +327,8 @@ function checkPassword(email, password) {
   return flag;
 };
 
+// When supplied with 1 and 62 this function returns a six digit pseudo-random code
+// to associate with a new user or new url addition.
 function generateRandomString(min, max) {
   const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const randomLength = 6;
