@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head></head>
-  <body style="font-size:20px; padding:50px;">
+  <head>
     <% include ./partials/_header %>
-  <p><form action="/login" method="POST">
-    Email: <input type="email" name="email">
-    Password: <input type="password" name="password">
-    <input type="submit" name="Submit">
-  </form></p>
+  </head>
+  <body style="font-size:20px; padding:50px;">
+    <p>
+      <form action="/login" method="POST">
+      Email: <input type="email" name="email">
+      Password: <input type="password" name="password">
+      <input type="submit" name="Submit">
+      </form>
+    </p>
   </body>
 </html>
