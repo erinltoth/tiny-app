@@ -12,6 +12,7 @@ app.use(cookieSession({
   name: 'session',
   keys: ['key1', 'key2'],
 }));
+app.set('trust proxy', 1);
 
 app.set('view engine', 'ejs');
 
@@ -100,6 +101,7 @@ app.get('/urls/:id', (request, response) => {
 
 app.get('/u/:shortURL', (request, response) => {
   if (checkShortUrl(request.params.shortURL)) {
+    // request.session.views = (request.session.views || 0) + 1;
     response.redirect(fetchLongUrl(request.params.shortURL));
   } else {
     response.send('I\'m sorry, that isn\'t a valid redirection link. Please go <a href=/urls/new>make one</a>');
