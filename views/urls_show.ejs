@@ -12,7 +12,7 @@
   This is the shortURL: <%= urls.shortURL %> <br />
 </p>
 <p>
-  <form action="/urls/<%= urls.shortURL %>" method="post">
+  <form action="/urls/<%= urls.shortURL %>?_method=PUT" method="post">
     <label for="update-URL"><%= urls.fullURL %> &#8649; </label>
     <input id="update-URL" type="text" name="newLongURL">
     <button>Update URL</button>

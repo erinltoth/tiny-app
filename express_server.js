@@ -4,7 +4,9 @@ const PORT = 8080;
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const cookieSession = require('cookie-session');
+const methodOverride = require('method-override');
 
+app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieSession({
   name: 'session',
@@ -119,7 +121,7 @@ app.post('/urls', (request, response) => {
     }
 });
 
-app.post('/urls/:id', (request, response) => {
+app.put('/urls/:id', (request, response) => {
   if (request.session.user_id) {
     if (checkShortUrl(request.params.id)) {
       if (checkOwnerLong(request.session.user_id, request.params.id)) {
@@ -134,7 +136,7 @@ app.post('/urls/:id', (request, response) => {
   }
 });
 
-app.post('/urls/:id/delete', (request, response) => {
+app.delete('/urls/:id/delete', (request, response) => {
   if (request.session.user_id) {
     if (checkOwnerLong(request.session.user_id, request.params.id)){
       delete urlDatabase[request.params.id];

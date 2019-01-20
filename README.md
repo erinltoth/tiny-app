@@ -13,6 +13,7 @@ TinyApp is a full stack web app built with Node and Express that allows users to
 - bcrypt
 - body-parser
 - cookie-session
+- method-override
 
 ## Installation
 1. Install required dependency packages in project root directory
